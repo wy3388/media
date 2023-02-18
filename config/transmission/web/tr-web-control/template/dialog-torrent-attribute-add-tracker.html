@@ -1,0 +1,274 @@
+<div class="easyui-layout" data-options="fit:true" style="width:100%;height:100%;">
+	<div data-options="region:'center'" style="padding:3px;border:0px;">
+		<div id="" class="dialog" style="width:100%;padding:0px;">
+			<span id="dialog-torrent-attribute-add-tracker-tip" class="tip"></span>
+			<div id="source" style="margin: 5px 0;"></div>
+			<span id="sync-tip" style="display: none;"></span>
+			<textarea id="txtTrackers" style="width:99%;height:120px;"></textarea>
+		</div>
+	</div>
+	<div data-options="region:'south',border:false" style="text-align:right;padding:6px;">
+		<span id="text-nochange" style="display:none;"></span>
+		<a id="torrent-attribute-add-tracker-button-sync" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" href="javascript:void(0);">Sync Trackers</a>
+		<a id="torrent-attribute-add-tracker-button-get" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" href="javascript:void(0);">Get Trackers</a>
+<!--		<a id="torrent-attribute-add-tracker-button-search-best-ip" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" href="javascript:void(0);">Best Trackers</a>-->
+<!--		<a id="torrent-attribute-add-tracker-button-search-all-ip" class="easyui-linkbutton" data-options="iconCls:'icon-search',plain:true" href="javascript:void(0);">All Trackers</a>-->
+		<a id="torrent-attribute-add-tracker-button-ok" class="easyui-linkbutton" data-options="iconCls:'icon-ok',plain:true" href="javascript:void(0);">Ok</a>
+		<a id="torrent-attribute-add-tracker-button-cancel" class="easyui-linkbutton" data-options="iconCls:'icon-cancel',plain:true"
+		   href="javascript:void(0);">Cancel</a>
+	</div>
+</div>
+<script type="text/javascript">
+	(function (thisDialog) {
+		let sourceArr = [
+			{
+				name: 'XIU2/best',
+				url: 'https://jsd.cdn.zzko.cn/gh/XIU2/TrackersListCollection/best.txt',
+				checked: true
+			},
+			{
+				name: 'XIU2/all',
+				url: 'https://jsd.cdn.zzko.cn/gh/XIU2/TrackersListCollection/all.txt',
+				checked: false
+			},
+			{
+				name: 'XIU2/http',
+				url: 'https://jsd.cdn.zzko.cn/gh/XIU2/TrackersListCollection/http.txt',
+				checked: false
+			},
+			{
+				name: 'ngosang/best',
+				url: 'https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_best.txt',
+				checked: true
+			},
+			{
+				name: 'ngosang/all',
+				url: 'https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_all.txt',
+				checked: false
+			},
+			{
+				name: 'ngosang/all_udp',
+				url: 'https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_all_udp.txt',
+				checked: false
+			},
+			{
+				name: 'ngosang/all_http',
+				url: 'https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_all_http.txt',
+				checked: false
+			},
+			{
+				name: 'ngosang/all_https',
+				url: 'https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_all_https.txt',
+				checked: false
+			},
+			{
+				name: 'ngosang/all_ws',
+				url: 'https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_all_ws.txt',
+				checked: false
+			},
+			{
+				name: 'ngosang/best_ip',
+				url: 'https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_best_ip.txt',
+				checked: false
+			},
+			{
+				name: 'ngosang/all_ip',
+				url: 'https://cdn.jsdelivr.net/gh/ngosang/trackerslist@master/trackers_all_ip.txt',
+				checked: true
+			},
+			{
+				name: 'animeTrackerList/AT_best',
+				url: 'https://cdn.jsdelivr.net/gh/DeSireFire/animeTrackerList/AT_best.txt',
+				checked: true
+			},
+			{
+				name: 'animeTrackerList/AT_all',
+				url: 'https://cdn.jsdelivr.net/gh/DeSireFire/animeTrackerList/AT_all.txt',
+				checked: false
+			},
+			{
+				name: 'animeTrackerList/AT_all_udp',
+				url: 'https://cdn.jsdelivr.net/gh/DeSireFire/animeTrackerList/AT_all_udp.txt',
+				checked: false
+			},
+			{
+				name: 'animeTrackerList/AT_all_http',
+				url: 'https://cdn.jsdelivr.net/gh/DeSireFire/animeTrackerList/AT_all_http.txt',
+				checked: false
+			},
+			{
+				name: 'animeTrackerList/AT_all_https',
+				url: 'https://cdn.jsdelivr.net/gh/DeSireFire/animeTrackerList/AT_all_https.txt',
+				checked: false
+			},
+			{
+				name: 'animeTrackerList/AT_all_ws',
+				url: 'https://cdn.jsdelivr.net/gh/DeSireFire/animeTrackerList/AT_all_ws.txt',
+				checked: false
+			},
+			{
+				name: 'animeTrackerList/AT_best_ip',
+				url: 'https://cdn.jsdelivr.net/gh/DeSireFire/animeTrackerList/AT_best_ip.txt',
+				checked: true
+			},
+			{
+				name: 'animeTrackerList/AT_all_ip',
+				url: 'https://cdn.jsdelivr.net/gh/DeSireFire/animeTrackerList/AT_all_ip.txt',
+				checked: true
+			},
+			{
+				name: 'newtrackon/all',
+				url: 'https://newtrackon.com/api/stable?include_ipv4_only_trackers=1&include_ipv6_only_trackers=1',
+				checked: false
+			},
+		]
+		let sourceHtml = '<table>'
+		for (let i = 0; i < sourceArr.length; i++) {
+			let source = sourceArr[i]
+			if (i % 2 === 0) {
+				sourceHtml += `<tr><td><label><input type="checkbox" name="item" value="${source.name}" ${source.checked ? 'checked' : ''}>${source.name}</label></td>`
+			} else {
+				sourceHtml += `<td><label><input type="checkbox" name="item" value="${source.name}" ${source.checked ? 'checked' : ''}>${source.name}</label></td></tr>`
+			}
+		}
+		sourceHtml += '</table>'
+		$('#source').html(sourceHtml)
+
+		var title = "tip".split(",");
+		var torrent = transmission.torrents.all[system.currentTorrentId];
+
+		$.each(title, function (i, item) {
+			thisDialog.find("#dialog-torrent-attribute-add-tracker-" + item).html(system.lang.dialog[
+				"torrent-attribute-add-tracker"][item]);
+		});
+
+		thisDialog.find(".title").css({
+			background: "#e6e6e6"
+		});
+
+		title = "button-sync,button-get,button-search-best-ip,button-search-all-ip,button-ok,button-cancel".split(",");
+		$.each(title, function (i, item) {
+			thisDialog.find("#torrent-attribute-add-tracker-" + item).html(system.lang.dialog["public"][item]);
+			thisDialog.find("#torrent-attribute-add-tracker-" + item).html(system.lang.dialog[
+				"torrent-attribute-add-tracker"][item]);
+		});
+
+		thisDialog.find("#text-nochange").html(system.lang["public"]["text-nochange"]);
+
+		// 确认
+		thisDialog.find("#torrent-attribute-add-tracker-button-ok").click(function () {
+			var urls = thisDialog.find("#txtTrackers").val();
+			var button = $(this);
+
+			if (urls != "") {
+				var newTrackers = [];
+				var items = urls.split("\n");
+				$.each(items, function(index, value) {
+					if (isURL(value) && newTrackers.indexOf(value)==-1) {
+						newTrackers.push(value);
+					}
+				});
+				if (newTrackers.length==0) {
+					thisDialog.find("#text-nochange").html(system.lang["public"]["text-nochange"]).fadeInAndOut();
+					return;
+				}
+				var icon = button.linkbutton("options").iconCls;
+				button.linkbutton({
+					disabled: true,
+					iconCls: "icon-loading"
+				});
+				transmission.exec({
+					method: "torrent-set",
+					arguments: {
+						ids: system.currentTorrentId,
+						trackerAdd: newTrackers
+					}
+				}, function (data) {
+					button.linkbutton({
+						iconCls: icon,
+						disabled: false
+					});
+
+					if (data.result == "success") {
+						system.getTorrentInfos(system.currentTorrentId);
+						thisDialog.dialog("close");
+					}
+				});
+			} else {
+				thisDialog.find("#text-nochange").html(system.lang["public"]["text-nochange"]).fadeInAndOut();
+			}
+
+		});
+
+        thisDialog.find("#torrent-attribute-add-tracker-button-search-best-ip").click(function () {
+            var trackersURL = "https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best_ip.txt"
+            $.get(trackersURL,function(data){
+                $("#txtTrackers").html(data.replace(/[\r\n]+/g,"\n"));
+            });
+        });
+
+        thisDialog.find("#torrent-attribute-add-tracker-button-search-all-ip").click(function () {
+            var trackersURL="https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_all_ip.txt"
+            $.get(trackersURL,function(data){
+                $("#txtTrackers").html(data.replace(/[\r\n]+/g,"\n"));
+            });
+        });
+
+		thisDialog.find("#torrent-attribute-add-tracker-button-get").click(function () {
+			let keys = []
+			$("input[name='item']:checked").each((_, e) => keys.push($(e).val()))
+			let str = localStorage.getItem("trackers")
+			if (str && str !== '') {
+				let list = JSON.parse(str)
+				let newList = list.filter(s => keys.indexOf(s.name) !== -1)
+				let content = ''
+				for (let i = 0; i < newList.length; i++) {
+					content += newList[i].value
+					if (i < newList.length - 2) {
+						content += '\n\n'
+					}
+				}
+				$('#txtTrackers').html(content.replace(/[\r\n]+/g, "\n"))
+			} else {
+				$('#sync-tip').show();
+				$('#sync-tip').html('<span style="color: red">请先同步Tracker</span>')
+			}
+		});
+
+		thisDialog.find("#torrent-attribute-add-tracker-button-sync").click(function () {
+			let list = []
+			let req = []
+			for (let i = 0; i < sourceArr.length; i++) {
+				let source = sourceArr[i]
+				req.push($.get(source.url, function (data) {
+					list.push({
+						name: source.name,
+						value: data
+					})
+				}));
+			}
+			$.when(...req).done(function () {
+				$('#sync-tip').show();
+				$('#sync-tip').html('<span style="color: green">success</span>')
+				localStorage.setItem('trackers', JSON.stringify(list))
+				let newList = list.filter(s => keys.indexOf(s.name) !== -1)
+				let content = ''
+				for (let i = 0; i < newList.length; i++) {
+					content += newList[i].value
+					if (i < newList.length - 2) {
+						content += '\n\n'
+					}
+				}
+				$('#txtTrackers').html(content.replace(/[\r\n]+/g, "\n"))
+			});
+		});
+        
+		thisDialog.find("#torrent-attribute-add-tracker-button-cancel").click(function () {
+			thisDialog.dialog("close");
+		});
+
+		function isURL(v) {
+			return /^[a-zA-z]+:\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?$/.test(v);
+		}
+	})($("#dialog-torrent-attribute-add-tracker"));
+</script>
