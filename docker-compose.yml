@@ -27,16 +27,39 @@ services:
       - ${DOWNLOADS_DIR}:/downloads
     network_mode: host
     restart: always
-  plex:
-    container_name: plex
-    image: plexinc/pms-docker:${PLEX_VERSION}
+  jellyfin:
+    container_name: jellyfin
+    image: jellyfin/jellyfin:${JELLYFIN_VERSION}
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-      - device=/dev/dri:/dev/dri
     volumes:
-      - ./config/plex/database:/config
-      - ./config/plex/transcode/temp:/transcode
+      - ./config/jellyfin/config:/config
+      - ./config/jellyfin/cache:/cache
+      - ./config/jellyfin/font:/usr/share/fonts/truetype/DejaVu
       - ${MEDIA_DIR}:/data
+    extra_hosts:
+      - api.themoviedb.org:${THEMOVIEDB_IP}
+      - api.tmdb.org:${TMDB_IP}
+    # 配置N卡转码
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - capabilities: [gpu]
     network_mode: host
+    restart: always
+#  plex:
+#    container_name: plex
+#    image: plexinc/pms-docker:${PLEX_VERSION}
+#    environment:
+#      - PUID=${PUID}
+#      - PGID=${PGID}
+#      - TZ=${TZ}
+#      - device=/dev/dri:/dev/dri
+#    volumes:
+#      - ./config/plex/database:/config
+#      - ./config/plex/transcode/temp:/transcode
+#      - ${MEDIA_DIR}:/data
+#    network_mode: host
