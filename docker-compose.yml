@@ -13,16 +13,16 @@ services:
       - TZ=${TZ}
     network_mode: host
     restart: always
-  transmission:
-    container_name: transmission
-    image: linuxserver/transmission:${TRANSMISSION_VERSION}
+  qbittorrent:
+    container_name: qbittorrent
+    image: linuxserver/qbittorrent:${QBITTORRENT_VERSION}
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
+      - WEBUI_PORT=9090
     volumes:
-      - ./config/transmission/web:/usr/share/transmission/web
-      - ./config/transmission/config:/config
+      - ./config/qbittorrent/:/config
       - ./temp:/temp
       - ${DOWNLOADS_DIR}:/downloads
     network_mode: host
@@ -50,6 +50,20 @@ services:
             - capabilities: [gpu]
     network_mode: host
     restart: always
+#  transmission:
+#    container_name: transmission
+#    image: linuxserver/transmission:${TRANSMISSION_VERSION}
+#    environment:
+#      - PUID=${PUID}
+#      - PGID=${PGID}
+#      - TZ=${TZ}
+#    volumes:
+#      - ./config/transmission/web:/usr/share/transmission/web
+#      - ./config/transmission/config:/config
+#      - ./temp:/temp
+#      - ${DOWNLOADS_DIR}:/downloads
+#    network_mode: host
+#    restart: always
 #  plex:
 #    container_name: plex
 #    image: plexinc/pms-docker:${PLEX_VERSION}
