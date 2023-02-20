@@ -1,16 +1,16 @@
 version: '3'
 services:
-  nas-tools:
-    container_name: nas-tools
-    image: sungamma/nas-tools:${NAS_TOOLS_VERSION}
+  hlink:
+    container_name: hlink
+    image: likun7981/hlink:${HLINK_VERSION}
     volumes:
-      - ./config/nas-tools:/config
       - ${DATA_DIR}:/data
+      - ./config/hlink/:/hlink_config
     environment:
-      - UMASK=2
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
+      - HLINK_HOME=/hlink_config
     network_mode: host
     restart: always
   qbittorrent:
@@ -20,7 +20,7 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-      - WEBUI_PORT=9090
+      - WEBUI_PORT=8090
     volumes:
       - ./config/qbittorrent/:/config
       - ./temp:/temp
@@ -50,6 +50,19 @@ services:
             - capabilities: [gpu]
     network_mode: host
     restart: always
+#  nas-tools:
+#    container_name: nas-tools
+#    image: sungamma/nas-tools:${NAS_TOOLS_VERSION}
+#    volumes:
+#      - ./config/nas-tools:/config
+#      - ${DATA_DIR}:/data
+#    environment:
+#      - UMASK=2
+#      - PUID=${PUID}
+#      - PGID=${PGID}
+#      - TZ=${TZ}
+#    network_mode: host
+#    restart: always
 #  transmission:
 #    container_name: transmission
 #    image: linuxserver/transmission:${TRANSMISSION_VERSION}
