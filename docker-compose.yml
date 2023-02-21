@@ -13,6 +13,19 @@ services:
       - HLINK_HOME=/hlink_config
     network_mode: host
     restart: always
+  tmm:
+    container_name: tmm
+    image: tinymediamanager/tinymediamanager:${TMM_VERSION}
+    volumes:
+      - ./config/tmm/data:/data
+      - ./config/tmm/addons:/app/addons
+      - ${MEDIA_DIR}:/media
+    environment:
+      - USER_ID=${PUID}
+      - GROUP_ID=${PGID}
+      - PASSWORD=123456
+    network_mode: host
+    restart: always
   qbittorrent:
     container_name: qbittorrent
     image: linuxserver/qbittorrent:${QBITTORRENT_VERSION}
