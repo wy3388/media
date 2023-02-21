@@ -24,6 +24,9 @@ services:
       - USER_ID=${PUID}
       - GROUP_ID=${PGID}
       - PASSWORD=123456
+    extra_hosts:
+      - api.themoviedb.org:${THEMOVIEDB_IP}
+      - api.tmdb.org:${TMDB_IP}
     network_mode: host
     restart: always
   qbittorrent:
