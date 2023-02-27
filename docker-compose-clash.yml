@@ -1,0 +1,20 @@
+version: '3'
+services:
+  portainer:
+    container_name: clash
+    image: dreamacro/clash:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Shanghai
+    network_mode: host
+    volumes:
+      - ./config.yaml:/root/.config/clash/config.yaml
+    restart: always
+  yacd:
+    container_name: yacd
+    image: haishanh/yacd:latest
+    ports:
+      - "1234:80"
+    restart: always
+

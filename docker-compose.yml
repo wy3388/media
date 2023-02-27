@@ -6,12 +6,13 @@ services:
     volumes:
       - ${DATA_DIR}:/data
       - ./config/hlink/:/hlink_config
+    ports:
+      - "19090:9090"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
       - HLINK_HOME=/hlink_config
-    network_mode: host
     restart: always
   transmission:
       container_name: transmission
@@ -34,14 +35,13 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
+      - http_proxy=http://127.0.0.1:7890
+      - https_proxy=http://127.0.0.1:7890
     volumes:
       - ./config/jellyfin/config:/config
       - ./config/jellyfin/cache:/cache
       - ./config/jellyfin/font:/usr/share/fonts/truetype/DejaVu
       - ${MEDIA_DIR}:/data
-    extra_hosts:
-      - api.themoviedb.org:${THEMOVIEDB_IP}
-      - api.tmdb.org:${TMDB_IP}
     # 配置N卡转码
     deploy:
       resources:
