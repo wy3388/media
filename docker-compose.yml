@@ -7,27 +7,27 @@ services:
       - ${DATA_DIR}:/data
       - ./config/hlink/:/hlink_config
     ports:
-      - "19090:9090"
+      - "9090:9090"
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
       - HLINK_HOME=/hlink_config
     restart: always
-  transmission:
-      container_name: transmission
-      image: linuxserver/transmission:${TRANSMISSION_VERSION}
-      environment:
-        - PUID=${PUID}
-        - PGID=${PGID}
-        - TZ=${TZ}
-      volumes:
-        - ./config/transmission/web:/usr/share/transmission/web
-        - ./config/transmission/config:/config
-        - ./temp:/temp
-        - ${DOWNLOADS_DIR}:/downloads
-      network_mode: host
-      restart: always
+#  transmission:
+#      container_name: transmission
+#      image: linuxserver/transmission:${TRANSMISSION_VERSION}
+#      environment:
+#        - PUID=${PUID}
+#        - PGID=${PGID}
+#        - TZ=${TZ}
+#      volumes:
+#        - ./config/transmission/web:/usr/share/transmission/web
+#        - ./config/transmission/config:/config
+#        - ./temp:/temp
+#        - ${DOWNLOADS_DIR}:/downloads
+#      network_mode: host
+#      restart: always
   jellyfin:
     container_name: jellyfin
     image: jellyfin/jellyfin:${JELLYFIN_VERSION}
@@ -35,12 +35,12 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-      - http_proxy=http://127.0.0.1:7890
-      - https_proxy=http://127.0.0.1:7890
+      - http_proxy=http://127.0.0.1:17890
+      - https_proxy=http://127.0.0.1:17890
     volumes:
       - ./config/jellyfin/config:/config
       - ./config/jellyfin/cache:/cache
-      - ./config/jellyfin/font:/usr/share/fonts/truetype/DejaVu
+      - ./config/jellyfin/fonts:/usr/share/fonts/truetype/DejaVu
       - ${MEDIA_DIR}:/data
     # 配置N卡转码
     deploy:
@@ -50,20 +50,20 @@ services:
             - capabilities: [gpu]
     network_mode: host
     restart: always
-#  qbittorrent:
-#    container_name: qbittorrent
-#    image: linuxserver/qbittorrent:${QBITTORRENT_VERSION}
-#    environment:
-#      - PUID=${PUID}
-#      - PGID=${PGID}
-#      - TZ=${TZ}
-#      - WEBUI_PORT=8090
-#    volumes:
-#      - ./config/qbittorrent/:/config
-#      - ./temp:/temp
-#      - ${DOWNLOADS_DIR}:/downloads
-#    network_mode: host
-#    restart: always
+  qbittorrent:
+    container_name: qbittorrent
+    image: linuxserver/qbittorrent:${QBITTORRENT_VERSION}
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - WEBUI_PORT=8090
+    volumes:
+      - ./config/qbittorrent/:/config
+      - ./temp:/temp
+      - ${DOWNLOADS_DIR}:/downloads
+    network_mode: host
+    restart: always
 #  tmm:
 #    container_name: tmm
 #    image: tinymediamanager/tinymediamanager:${TMM_VERSION}
