@@ -13,4 +13,5 @@ services:
       - "445:445"
     volumes:
       - /data:/data
-    command: '-u "root;Wy89312198" -s"data;/data;no;no;no;all"'
+    # 参数说明参考地址：https://github.com/dperson/samba
+    command: '-u "root;Wy89312198" -s "data;/data;no;no;no;all;root;root"'
