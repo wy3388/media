@@ -1,0 +1,19 @@
+version: '3'
+services:
+  qbittorrent:
+    container_name: qbittorrent
+    image: linuxserver/qbittorrent:latest
+    ports:
+      - "8090:8090"
+      - "65102:65102/tcp"
+      - "65102:65102/udp"
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=Asia/Shanghai
+      - WEBUI_PORT=8090
+    volumes:
+      - ./config:/config
+      - ./temp:/temp
+      - /data/downloads:/downloads
+    restart: always

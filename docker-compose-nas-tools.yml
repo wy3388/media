@@ -1,0 +1,13 @@
+version: "3"
+services:
+  nas-tools:
+    container_name: nas-tools
+    image: 89312198/nas-tools:2.9.1
+    volumes:
+      - ./config:/config
+      - /data:/data
+    ports:
+      - "30000:3000"
+    environment:
+      - NASTOOL_AUTO_UPDATE=false
+    restart: always

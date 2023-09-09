@@ -1,0 +1,16 @@
+version: "3"
+services:
+  samba:
+    image: dperson/samba
+    container_name: samba
+    restart: always
+    environment:
+      - TZ=Asia/Shanghai
+      - PGID=0
+      - PUID=0
+    ports:
+      - "139:139"
+      - "445:445"
+    volumes:
+      - /data:/data
+    command: '-u "root;Wy89312198" -s"data;/data;no;no;no;all"'
