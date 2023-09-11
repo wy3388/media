@@ -1,0 +1,21 @@
+version: "3"
+services:
+  emby:
+    container_name: emby
+    image: lovechen/embyserver:latest
+    ports:
+      - "8096:8096"
+      - "8920:8920"
+      - "7359:7359/udp"
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=Asia/Shanghai
+      - GIDLIST=0
+    volumes:
+      - ./config/config:/config
+      - ./config/cache:/cache
+      - /data/media:/data
+    devices:
+      - /dev/dri:/dev/dri
+    restart: always

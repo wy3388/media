@@ -35,8 +35,6 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-      - http_proxy=http://127.0.0.1:17890
-      - https_proxy=http://127.0.0.1:17890
     volumes:
       - ./config/jellyfin/config:/config
       - ./config/jellyfin/cache:/cache
