@@ -1,0 +1,23 @@
+version: "3"
+services:
+  chinesesubfinder:
+    container_name: chinesesubfinder
+    image: allanpk716/chinesesubfinder:latest
+    volumes:
+      - ./config:/config
+      - /data/media:/media
+      - ./browser:/root/.cache/rod/browser
+    environment:
+      - PUID=0
+      - PGID=0
+      - PERMS=true
+      - TZ=Asia/Shanghai
+      - UMASK=022
+    restart: always
+    ports:
+      - "19035:19035"
+      - "19037:19037"
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
