@@ -8,25 +8,25 @@ services:
       - PGID=0
       - TZ=Asia/Shanghai
     networks:
-      clash_net:
-        ipv4_address: 10.10.10.100
+      - default
+      - local
+    expose:
+      - 7890
     ports:
       - "19090:9090"
-      - "17890:7890"
     volumes:
       - ./config/clash/config.yaml:/root/.config/clash/config.yaml
     restart: always
   yacd:
     container_name: yacd
     image: haishanh/yacd:latest
+    networks:
+      - default
     ports:
       - "1234:80"
     restart: always
 
 networks:
-  clash_net:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 10.10.0.0/16
-          gateway: 10.10.0.1
+  local:
+    external: true
+    name: local
