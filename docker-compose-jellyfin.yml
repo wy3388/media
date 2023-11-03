@@ -24,6 +24,9 @@ services:
       - /data/media:/data
     # 配置N卡转码
     runtime: nvidia
+    networks:
+      - default
+      - local
     deploy:
       resources:
         reservations:
