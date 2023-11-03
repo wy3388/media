@@ -1,8 +1,11 @@
-version: "3"
+#需要先创建local网络：docker network create local
+version: "3.8"
 services:
   jellyfin:
     container_name: jellyfin
     image: jellyfin/jellyfin:latest
+    external_links:
+      - clash
     ports:
       - "8096:8096"
       - "8920:8920"
@@ -12,15 +15,23 @@ services:
       - PUID=0
       - PGID=0
       - TZ=Asia/Shanghai
+      - HTTP_PROXY=http://clash:7890
+      - HTTPS_PROXY=http://clash:7890
     volumes:
       - ./config/config:/config
       - ./config/cache:/cache
       - /opt/fonts:/usr/share/fonts/truetype/DejaVu
       - /data/media:/data
     # 配置N卡转码
+    runtime: nvidia
     deploy:
       resources:
         reservations:
           devices:
             - capabilities: [ gpu ]
     restart: always
+
+networks:
+  local:
+    external: true
+    name: local

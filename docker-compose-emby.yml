@@ -1,3 +1,4 @@
+#需要先创建local网络：docker network create local
 version: "3"
 services:
   emby:
@@ -9,6 +10,7 @@ services:
       - "8096:8096"
       - "8920:8920"
       - "7359:7359/udp"
+      - "1900:1900/udp"
     environment:
       - PUID=0
       - PGID=0
