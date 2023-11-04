@@ -3,6 +3,8 @@ services:
   chinesesubfinder:
     container_name: chinesesubfinder
     image: allanpk716/chinesesubfinder:latest
+    external_links:
+      - clash
     volumes:
       - ./config:/config
       - /data/media:/media
@@ -13,7 +15,12 @@ services:
       - PERMS=true
       - TZ=Asia/Shanghai
       - UMASK=022
+      - HTTP_PROXY=http://clash:7890
+      - HTTPS_PROXY=http://clash:7890
     restart: always
+    networks:
+      - default
+      - local
     ports:
       - "19035:19035"
       - "19037:19037"
@@ -21,3 +28,8 @@ services:
       driver: "json-file"
       options:
         max-size: "100m"
+
+networks:
+  local:
+    external:
+      name: local
