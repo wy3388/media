@@ -1,0 +1,43 @@
+#需要先创建local网络：docker network create local
+version: "3"
+services:
+  emby:
+    container_name: emby
+    image: lovechen/embyserver:latest
+    labels:
+      - net.unraid.docker.managed=dockerman
+      - net.unraid.docker.webui='http://[IP]:[PORT:8096]/'
+      - net.unraid.docker.icon='https://raw.githubusercontent.com/MediaBrowser/Emby.Resources/master/images/Logos/logoicon.png'
+    external_links:
+      - clash
+    ports:
+      - "8096:8096"
+      - "8920:8920"
+      - "7359:7359/udp"
+#      - "1900:1900/udp"
+    environment:
+      - HOST_OS="Unraid"
+      - HOST_HOSTNAME="local"
+      - PUID=0
+      - PGID=0
+      - TZ=Asia/Shanghai
+      - GIDLIST=0
+      - HTTP_PROXY=http://clash:7890
+      - HTTPS_PROXY=http://clash:7890
+      - NVIDIA_VISIBLE_DEVICES='GPU-52663ffe-541f-89f7-bc84-d2a7c5b38b10'
+    volumes:
+      - ./config/config:/config
+      - ./config/cache:/cache
+      - /mnt/user/media:/data
+    devices:
+      - /dev/nvidia0
+      - /dev/nvidiactl
+    networks:
+      - default
+      - local
+    restart: always
+
+networks:
+  local:
+    external:
+      name: local
