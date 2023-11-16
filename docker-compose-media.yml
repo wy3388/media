@@ -1,0 +1,88 @@
+services:
+#  jproxy:
+#    container_name: jproxy
+#    image: luckypuppy514/jproxy:latest
+#    external_links:
+#      - clash
+#    environment:
+#      - PUID=1000
+#      - PGID=100
+#      - HTTP_PROXY=http://clash:7890
+#      - HTTPS_PROXY=http://clash:7890
+#      - TZ=Asia/Shanghai
+#    volumes:
+#      - /mnt/user/app/media/jproxy/config:/app/database
+#    restart: always
+#    networks:
+#      - default
+#      - local
+#  prowlarr:
+#    container_name: prowlarr
+#    image: linuxserver/prowlarr:latest
+#    external_links:
+#      - clash
+#    environment:
+#      - PUID=1000
+#      - PGID=100
+#      - TZ=Asia/Shanghai
+#      - HTTP_PROXY=http://clash:7890
+#      - HTTPS_PROXY=http://clash:7890
+#    volumes:
+#      - /mnt/user/app/media/prowlarr/config:/config
+#    restart: always
+#    networks:
+#      - default
+#      - local
+  jackett:
+    container_name: jackett
+    image: linuxserver/jackett:latest
+    external_links:
+      - clash
+    environment:
+      - PUID=1000
+      - PGID=100
+      - TZ=Asia/Shanghai
+      - HTTP_PROXY=http://clash:7890
+      - HTTPS_PROXY=http://clash:7890
+    volumes:
+      - /mnt/user/app/media/jeckett/config:/config
+    restart: always
+    ports:
+      - 9117:9117
+  radarr:
+    container_name: radarr
+    image: linuxserver/radarr:latest
+    external_links:
+      - clash
+    environment:
+      - PUID=1000
+      - PGID=100
+      - TZ=Asia/Shanghai
+      - HTTP_PROXY=http://clash:7890
+      - HTTPS_PROXY=http://clash:7890
+    volumes:
+      - /mnt/user/app/media/radarr/config:/config
+      - /mnt/user/downloads:/data
+    restart: always
+    ports:
+      - 7878:7878
+#  sonarr:
+#    container_name: sonarr
+#    image: linuxserver/sonarr:version-3.0.10.1567
+#    external_links:
+#      - clash
+#    environment:
+#      - PUID=1000
+#      - PGID=100
+#      - TZ=Asia/Shanghai
+#      - HTTP_PROXY=http://clash:7890
+#      - HTTPS_PROXY=http://clash:7890
+#    volumes:
+#      - /mnt/user/app/media/sonarr/config:/config
+#      - /mnt/user/downloads:/data
+#    ports:
+#      - 8989:8989
+#    restart: always
+#    networks:
+#      - default
+#      - local
