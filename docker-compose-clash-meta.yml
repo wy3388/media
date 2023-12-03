@@ -1,0 +1,22 @@
+version: "3"
+services:
+  clash:
+    container_name: clash
+    image: 89312198/clash-meta:1.17.0
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=Asia/Shanghai
+    ports:
+      - "17890:7890"
+      - "17891:7891"
+      - "19090:9090"
+    volumes:
+      - /mnt/user/app/clash/config.yaml:/clash/config.yaml
+    restart: always
+  metacubexd:
+    container_name: metacubexd
+    image: 89312198/metacubexd:1.133.1
+    ports:
+      - "1234:80"
+    restart: always
