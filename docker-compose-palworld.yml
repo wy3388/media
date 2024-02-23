@@ -1,0 +1,16 @@
+version: "3"
+services:
+  palworld-server:
+    container_name: palworld-server
+    image: thijsvanloef/palworld-server-docker:latest
+    ports:
+      - "8211:8211/udp"
+      - "27015:27015/udp"
+      - "25575:25575/tcp"
+      - "25575:25575/udp"
+    volumes:
+      - ./palworld:/palworld/
+    env_file:
+      - .env-palworld-server
+    restart: unless-stopped
+    stop_grace_period: "5m"
